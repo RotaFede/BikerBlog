@@ -1,0 +1,86 @@
+1) Registrazione
+	URL: BikerBlog/registrazione POST
+	INPUT: 
+			nome: "Federico"
+			cognome: "Rota"
+			user: "Fede169"
+			psw: "12345678"
+			moto: "Tm smr 125 fi 2020"
+	OUTPUT: 
+			"Registrazione effettuata"
+			redirect a /login
+			
+2) Login 
+	URL: BikerBlog/login POST
+	INPUT:
+			user:"Fede169"
+			psw:"12345678"
+	OUTPUT: 
+			"Accesso consentito"
+			redirect a /
+			
+3) home -> nel caso di un admin potrà eliminare un qualunque post tramite redirect a /gestione/elimina
+	URL: BikerBlog/ POST
+	INPUT: 
+			ricerca:"Trentino"
+	OUTPUT:
+		{
+			[id:1, titolo:"itinerario in Trentino 1", contenuto:"...", immagine:img.jpg],
+			[id:2, titolo:"itinerario in Trentino 2", contenuto:"...", immagine:img.jpg],
+			[id:3, titolo:"itinerario in Trentino 3", contenuto:"...", immagine:img.jpg]
+		}
+
+4) gestione -> mostra le informazioni dell'utente e un'anteprima dei post creati dall'utente
+	URL: BikerBlog/gestione POST   
+	INPUT: 
+			operazione:"modifica"
+			id:3
+	OUTPUT:
+			redirect alla pagina corretta (/crea, /modifica /elimina)
+
+	4.1) Crea post -> mostra i campi contenenti le parti del post da compilare
+		URL: BikerBlog/gestione/crea POST  
+		INPUP: 
+				titolo:"viaggio in Trentino"
+				contenuto:"..."
+				immagine:trentino.jpg
+		OUTPUT: 
+			{
+				[id:4, titolo:"viaggio in Trentino", contenuto:"...", immagine:trentino.jpg]
+			}
+			
+	4.2) Modifica post -> mostra nel dettaglio il post da modificare
+		URL: BikerBlog/gestione/modificapost POST
+		INPUT: 
+				id:3
+		OUTPUT: 
+			{
+				[id:3, titolo:"itinerario in Trentino 3", contenuto:"...", immagine:img.jpg]
+			}
+	4.3) Salva modifica
+		URL: BikerBlog/gestione/salva POST
+		INPUT: 
+				id:3
+				titolo:"itinerario in Trentino 3"
+				contenuto:"itinerario di 200Km in Trentino"
+				immagine:img.jpg
+		OUTPUT:
+				"modifica effettuata"
+				redirect a /gestione
+				
+	4.4) Elimina post -> mostra nel dettaglio il post da eliminare
+		URL: BikerBlog/gestione/elimina POST
+		INPUT: 
+				id:2
+		OUTPUT: 
+				"eliminazione effettuata"
+				redirect a /gestione
+	4.5) Modifica account -> mostra nel dettaglio l'account da modificare
+		URL: BikerBlog/gestione/modificauser POST
+		INPUT: 
+				
+		OUTPUT: 
+			{
+				[nome: "Federico", cognome: "Rota", user: "Fede169", psw: "12345678", moto: "Tm smr 125 fi 2020"]
+			}
+				
