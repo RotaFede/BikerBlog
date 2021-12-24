@@ -8,7 +8,7 @@
 			moto: "Tm smr 125 fi 2020"
 	OUTPUT: 
 			"Registrazione effettuata"
-			redirect a /login
+			redirect a /
 			
 2) Login 
 	URL: BikerBlog/login POST
