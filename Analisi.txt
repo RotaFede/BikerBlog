@@ -1,33 +1,33 @@
 1) Registrazione
-	URL: BikerBlog/registrazione POST
+	URL: BikerBlog/Registrazione POST
 	INPUT: 
 			nome: "Federico"
 			cognome: "Rota"
 			user: "Fede169"
 			psw: "12345678"
-			moto: "Tm smr 125 fi 2020"
+			moto: "Tm smr 125 fi 2020" not required
 	OUTPUT: 
 			"Registrazione effettuata"
-			redirect a /
+			redirect a /index.jsp
 			
 2) Login 
-	URL: BikerBlog/login POST
+	URL: BikerBlog/Login POST
 	INPUT:
 			user:"Fede169"
 			psw:"12345678"
 	OUTPUT: 
 			"Accesso consentito"
-			redirect a /
+			redirect a /home.jsp
 			
 3) home -> nel caso di un admin potrà eliminare un qualunque post tramite redirect a /gestione/elimina
-	URL: BikerBlog/ POST
+	URL: BikerBlog/home.jsp GET
 	INPUT: 
 			ricerca:"Trentino"
 	OUTPUT:
 		{
-			[id:1, titolo:"itinerario in Trentino 1", contenuto:"...", immagine:img.jpg],
-			[id:2, titolo:"itinerario in Trentino 2", contenuto:"...", immagine:img.jpg],
-			[id:3, titolo:"itinerario in Trentino 3", contenuto:"...", immagine:img.jpg]
+			[titolo:"itinerario in Trentino 1", descrizione:"...", immagine:img.jpg],
+			[titolo:"itinerario in Trentino 2", descrizione:"...", immagine:img.jpg],
+			[titolo:"itinerario in Trentino 3", descrizione:"...", immagine:img.jpg]
 		}
 
 4) gestione -> mostra le informazioni dell'utente e un'anteprima dei post creati dall'utente
@@ -36,7 +36,8 @@
 			operazione:"modifica"
 			id:3
 	OUTPUT:
-			redirect alla pagina corretta (/crea, /modifica /elimina)
+			redirect alla pagina /Salva nel caso della creazione o modifica di un post oppure 
+			stampa "post eliminato" in caso di eliminazione del post
 
 	4.1) Crea post -> mostra i campi contenenti le parti del post da compilare
 		URL: BikerBlog/gestione/crea POST  
@@ -46,7 +47,7 @@
 				immagine:trentino.jpg
 		OUTPUT: 
 			{
-				[id:4, titolo:"viaggio in Trentino", contenuto:"...", immagine:trentino.jpg]
+				[id:4, titolo:"viaggio in Trentino", descrizione:"...", immagine:trentino.jpg]
 			}
 			
 	4.2) Modifica post -> mostra nel dettaglio il post da modificare
@@ -55,7 +56,7 @@
 				id:3
 		OUTPUT: 
 			{
-				[id:3, titolo:"itinerario in Trentino 3", contenuto:"...", immagine:img.jpg]
+				[titolo:"itinerario in Trentino 3", descrizione:"...", immagine:img.jpg]
 			}
 	4.3) Salva modifica
 		URL: BikerBlog/gestione/salva POST
