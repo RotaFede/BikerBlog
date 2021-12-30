@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>Registrazione</title>	
+	</head>
+	<body>
+		<form action="Registrazione" method="post">
+			Nome: <input type="text" name="nome" required><br><br>
+			Cognome: <input type="text" name="cognome" required><br><br>
+			Username: <input type="text" name="username" required><br><br>
+			Password: <input type="password" name="psw" id="psw" required><input type="checkbox" onclick="mostra()">Mostra Password<br><br>
+			Moto: <input type="text" name="moto" placeholder="Marca - modello - anno"><br><br>
+			<input type="submit" value="Registra">
+		</form> 
+		<script type="text/javascript">
+			function mostra(){
+				var x = document.getElementById("psw");
+				  if (x.type === "password")
+					  x.type = "text";
+				  else
+					  x.type = "password";
+			}
+		</script>
+	</body>
+</html>
