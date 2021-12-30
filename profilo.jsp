@@ -1,4 +1,3 @@
-<!--  ~\Desktop\java\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BikerBlog -->
 <html>
 	<head>
 		<title>Profilo</title>
@@ -12,13 +11,23 @@
 	<%@ page import="javax.servlet.http.*" %>
 	
 	
-		<% if(session.getAttribute("nome") == null)
+		<% /* ~\Desktop\java\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BikerBlog 
+			POST:
+				ID = rs.getString(1)
+				User = rs.getString(2)
+				Titolo = rs.getString(3)
+				Descrizione = rs.getString(4)
+				Data creazione = rs.getString(5)
+				km = rs.getString(6)
+				tempo = rs.getString(7)	
+				img = rs.getString(8)*/
+		if(session.getAttribute("nome") == null)
 				response.sendRedirect(request.getContextPath() + "/index.jsp");
 			else{
 				out.println("<ul>");
 				out.println("<li><a href='home.jsp'>BikerBlog</a></li>");
 				out.println("<li><a href='Gestione?operazione=crea'>Crea nuovo post</a></li>");
-				out.println("<li><a href='Gestione?operazione=user'>Cambia moto</a></li>");
+				out.println("<li><a href='Gestione?operazione=user'>Modifica Profilo</a></li>");
 				out.println("<li><a href='Logout'>Esci</a></li>");
 				out.println("</ul><br><br><br><br>");
 				try {
@@ -33,11 +42,19 @@
 		            session = request.getSession();
 		            String query = "SELECT * FROM Post WHERE Utente='" + session.getAttribute("user") +"' ORDER BY DataCreazione DESC;"; 
 		            ResultSet rs = st.executeQuery(query);
-		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Operazione</th>");
+		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza</th><th>Tempo</th><th>Operazione</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
 		            	out.println("<td>" + rs.getString(3) + "</td>");
 		            	out.println("<td>" + rs.getString(4) + "</td>");
+		            	if(rs.getString(6)!=null)
+		            		out.println("<td>" + rs.getString(6) + "</td>");
+		            	else
+		            		out.println("<td>nd</td>");
+		            	if(rs.getString(6)!=null)
+		            		out.println("<td>" + rs.getString(7) + "</td>");
+		            	else
+		            		out.println("<td>nd</td>");
 		            	out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(1)+"'>Modifica</a>");
 		            	out.println("<a href='Gestione?operazione=elimina&id="+rs.getString(1)+"'>Elimina</a></td>");
 		            	out.println("</tr>");
