@@ -33,17 +33,17 @@
 		            session = request.getSession();
 		            String query = "SELECT * FROM Post ORDER BY DataCreazione DESC;"; 
 		            ResultSet rs = st.executeQuery(query);
-		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza</th><th>Tempo</th><th>Operazione</th>");
+		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza</th><th>Tempo</th><th>Utente</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
 		            	out.println("<td>" + rs.getString(3) + "</td>");
 		            	out.println("<td>" + rs.getString(4) + "</td>");
 		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(6) + "</td>");
+		            		out.println("<td>" + rs.getString(6) + " Km</td>");
 		            	else
 		            		out.println("<td>nd</td>");
 		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(7) + "</td>");
+		            		out.println("<td>" + rs.getString(7) + " h</td>");
 		            	else
 		            		out.println("<td>nd</td>");		            		
 		            	out.println("<td>" + rs.getString(2) + "</td>");

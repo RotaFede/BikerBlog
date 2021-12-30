@@ -48,11 +48,11 @@
 		            	out.println("<td>" + rs.getString(3) + "</td>");
 		            	out.println("<td>" + rs.getString(4) + "</td>");
 		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(6) + "</td>");
+		            		out.println("<td>" + rs.getString(6) + " Km</td>");
 		            	else
 		            		out.println("<td>nd</td>");
 		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(7) + "</td>");
+		            		out.println("<td>" + rs.getString(7) + " h</td>");
 		            	else
 		            		out.println("<td>nd</td>");
 		            	out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(1)+"'>Modifica</a>");
