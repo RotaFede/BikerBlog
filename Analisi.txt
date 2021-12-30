@@ -1,5 +1,5 @@
 1) Registrazione
-	URL: BikerBlog/Registrazione POST
+	URL: BikerBlog/Registra.html POST
 	INPUT: 
 			nome: "Federico"
 			cognome: "Rota"
@@ -19,7 +19,7 @@
 			"Accesso consentito"
 			redirect a /home.jsp
 			
-3) home -> nel caso di un admin potrà eliminare un qualunque post tramite redirect a /gestione/elimina
+3) home -> nel caso di un admin potrà eliminare un qualunque post 
 	URL: BikerBlog/home.jsp GET
 	INPUT: 
 			ricerca:"Trentino"
@@ -30,8 +30,8 @@
 			[titolo:"itinerario in Trentino 3", descrizione:"...", immagine:img.jpg]
 		}
 
-4) gestione -> mostra le informazioni dell'utente e un'anteprima dei post creati dall'utente
-	URL: BikerBlog/gestione POST   
+4) profilo -> mostra le informazioni dell'utente e un'anteprima dei post creati dall'utente
+	URL: BikerBlog/profilo POST   
 	INPUT: 
 			operazione:"modifica"
 			id:3
@@ -40,48 +40,46 @@
 			stampa "post eliminato" in caso di eliminazione del post
 
 	4.1) Crea post -> mostra i campi contenenti le parti del post da compilare
-		URL: BikerBlog/gestione/crea POST  
+		URL: BikerBlog/gestione?operazione=crea GET
 		INPUP: 
 				titolo:"viaggio in Trentino"
-				contenuto:"..."
+				descrizione:"..."
 				immagine:trentino.jpg
 		OUTPUT: 
-			{
-				[id:4, titolo:"viaggio in Trentino", descrizione:"...", immagine:trentino.jpg]
-			}
+			redirect a /salva
 			
 	4.2) Modifica post -> mostra nel dettaglio il post da modificare
-		URL: BikerBlog/gestione/modificapost POST
+		URL: BikerBlog/gestione?operazione=modifica&id=3 GET
 		INPUT: 
 				id:3
 		OUTPUT: 
 			{
 				[titolo:"itinerario in Trentino 3", descrizione:"...", immagine:img.jpg]
 			}
-	4.3) Salva modifica
+	4.3) Salva modifica/creazione
 		URL: BikerBlog/gestione/salva POST
 		INPUT: 
 				id:3
 				titolo:"itinerario in Trentino 3"
-				contenuto:"itinerario di 200Km in Trentino"
+				descrizione:"itinerario di 200Km in Trentino"
 				immagine:img.jpg
 		OUTPUT:
-				"modifica effettuata"
+				"modifica effettuata" o "post creato"
 				redirect a /gestione
 				
 	4.4) Elimina post -> mostra nel dettaglio il post da eliminare
-		URL: BikerBlog/gestione/elimina POST
+		URL: BikerBlog/gestione?operazione=elimina&id=2 GET
 		INPUT: 
 				id:2
 		OUTPUT: 
-				"eliminazione effettuata"
+				"post eliminato"
 				redirect a /gestione
 	4.5) Modifica account -> mostra nel dettaglio l'account da modificare
-		URL: BikerBlog/gestione/modificauser POST
+		URL: BikerBlog/user POST
 		INPUT: 
 				
 		OUTPUT: 
 			{
-				[nome: "Federico", cognome: "Rota", user: "Fede169", psw: "12345678", moto: "Tm smr 125 fi 2020"]
+				[nome: "Federico", cognome: "Rota", user: "Fede169", moto: "Tm smr 125 fi 2020"]
 			}
 				
