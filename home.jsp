@@ -19,34 +19,51 @@
 		<%@ page import="javax.servlet.http.*" %>
 		<% if (session.getAttribute("nome") != null){
 				out.println("<h1> Benvenuto " + session.getAttribute("nome") + " " + session.getAttribute("cognome") + "</h1>");
-		
+				String ricerca = request.getParameter("ricerca");
 				try {
 		            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 		        } catch (ClassNotFoundException e) {
 		            out.println("<p>Errore: Impossibile caricare il Driver Ucanaccess</p>");
 		        }
-		        Connection connection = null;
-		        try{
+		        Connection connection = null; %>
+		        
+				<form action="home.jsp" method="get">
+					<input type="search" name="ricerca">
+					<input type="submit" value="Cerca">
+				</form>   
+				
+		     <% try{
 		            connection = DriverManager.getConnection("jdbc:ucanaccess://" + request.getServletContext().getRealPath("/") + "user.accdb");
 		            Statement st = connection.createStatement();
 		            //out.println("jdbc:ucanaccess://" + request.getServletContext().getRealPath("/"));
 		            session = request.getSession();
-		            String query = "SELECT * FROM Post ORDER BY DataCreazione DESC;"; 
+		            String query="";
+		            if(ricerca==null)
+		            	query = "SELECT Titolo, Descrizione, Distanza, Tempo, Utente, Mail, ID FROM Utenti INNER JOIN Post ON Utenti.Username = Post.Utente ORDER BY DataCreazione DESC;";
+	            	else
+		            	query = "SELECT Titolo, Descrizione, Distanza, Tempo, Utente, Mail, ID FROM Utenti INNER JOIN Post ON Utenti.Username = Post.Utente WHERE Titolo like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";		
 		            ResultSet rs = st.executeQuery(query);
 		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza</th><th>Tempo</th><th>Utente</th>");
+		            if(session.getAttribute("tipo").equals("admin"))
+		            	out.println("<th>Operazione</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
-		            	out.println("<td>" + rs.getString(3) + "</td>");
-		            	out.println("<td>" + rs.getString(4) + "</td>");
-		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(6) + " Km</td>");
+		            	out.println("<td>" + rs.getString(1) + "</td>");
+		            	out.println("<td>" + rs.getString(2) + "</td>");
+		            	if(rs.getString(3)!=null)
+		            		out.println("<td>" + rs.getString(3) + " Km</td>");
 		            	else
 		            		out.println("<td>nd</td>");
-		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(7) + " h</td>");
+		            	if(rs.getString(4)!=null)
+		            		out.println("<td>" + rs.getString(4) + " h</td>");
 		            	else
-		            		out.println("<td>nd</td>");		            		
-		            	out.println("<td>" + rs.getString(2) + "</td>");
+		            		out.println("<td>nd</td>");	
+		            	if(rs.getString(6)!=null)
+		            		out.println("<td title='"+rs.getString(6)+"'>" + rs.getString(5) + "</td>");
+		            	else
+		            		out.println("<td>" + rs.getString(5) + "</td>");
+		            	if(session.getAttribute("tipo").equals("admin"))
+		            		out.println("<td><a href='Gestione?operazione=elimina&id="+rs.getString(7)+"'>Elimina</a></td>");
 		            	out.println("</tr>");
 		            }
 		            out.println("</table><br><br>");
