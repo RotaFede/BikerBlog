@@ -42,19 +42,19 @@
 		            session = request.getSession();
 		            String query = "SELECT * FROM Post WHERE Utente='" + session.getAttribute("user") +"' ORDER BY DataCreazione DESC;"; 
 		            ResultSet rs = st.executeQuery(query);
-		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza</th><th>Tempo</th><th>Operazione</th>");
+		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Operazione</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
 		            	out.println("<td>" + rs.getString(3) + "</td>");
 		            	out.println("<td>" + rs.getString(4) + "</td>");
 		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(6) + " Km</td>");
+		            		out.println("<td>" + rs.getString(6) + "</td>");
 		            	else
-		            		out.println("<td>nd</td>");
+		            		out.println("<td></td>");
 		            	if(rs.getString(6)!=null)
-		            		out.println("<td>" + rs.getString(7) + " h</td>");
+		            		out.println("<td>" + rs.getString(7) + "</td>");
 		            	else
-		            		out.println("<td>nd</td>");
+		            		out.println("<td></td>");
 		            	out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(1)+"'>Modifica</a>");
 		            	out.println("<a href='Gestione?operazione=elimina&id="+rs.getString(1)+"'>Elimina</a></td>");
 		            	out.println("</tr>");

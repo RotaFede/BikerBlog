@@ -43,7 +43,7 @@
 	            	else
 		            	query = "SELECT Titolo, Descrizione, Distanza, Tempo, Utente, Mail, ID FROM Utenti INNER JOIN Post ON Utenti.Username = Post.Utente WHERE Titolo like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";		
 		            ResultSet rs = st.executeQuery(query);
-		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza</th><th>Tempo</th><th>Utente</th>");
+		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Utente</th>");
 		            if(session.getAttribute("tipo").equals("admin"))
 		            	out.println("<th>Operazione</th>");
 		            while(rs.next()) {
@@ -51,13 +51,13 @@
 		            	out.println("<td>" + rs.getString(1) + "</td>");
 		            	out.println("<td>" + rs.getString(2) + "</td>");
 		            	if(rs.getString(3)!=null)
-		            		out.println("<td>" + rs.getString(3) + " Km</td>");
+		            		out.println("<td>" + rs.getString(3) + "</td>");
 		            	else
-		            		out.println("<td>nd</td>");
+		            		out.println("<td></td>");
 		            	if(rs.getString(4)!=null)
-		            		out.println("<td>" + rs.getString(4) + " h</td>");
+		            		out.println("<td>" + rs.getString(4) + "</td>");
 		            	else
-		            		out.println("<td>nd</td>");	
+		            		out.println("<td></td>");	
 		            	if(rs.getString(6)!=null)
 		            		out.println("<td title='"+rs.getString(6)+"'>" + rs.getString(5) + "</td>");
 		            	else
