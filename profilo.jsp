@@ -24,12 +24,29 @@
 		if(session.getAttribute("nome") == null)
 				response.sendRedirect(request.getContextPath() + "/index.jsp");
 			else{
+				String user = request.getParameter("user");
+				String opz = request.getParameter("opz");
+				
 				out.println("<ul>");
 				out.println("<li><a href='home.jsp'>BikerBlog</a></li>");
-				out.println("<li><a href='Gestione?operazione=crea'>Crea nuovo post</a></li>");
-				out.println("<li><a href='Gestione?operazione=user'>Modifica Profilo</a></li>");
+				if(user==null || session.getAttribute("user").equals(user)){
+					out.println("<li><a href='Gestione?operazione=crea'>Crea nuovo post</a></li>");
+					out.println("<li><a href='Gestione?operazione=user'>Modifica Profilo</a></li>");
+				}
 				out.println("<li><a href='Logout'>Esci</a></li>");
-				out.println("</ul><br><br><br><br>");
+				out.println("</ul><br><br>");
+				if(opz!=null){
+					if(opz.equals("crea"))
+						out.println("<h3> Post creato correttamente </h3>");
+					else if (opz.equals("modifica"))
+						out.println("<h3> Post modificato correttamente </h3>");
+					else if(opz.equals("user"))
+						out.println("<h3> Utente modificato correttamente </h3>");
+					else if(opz.equals("invalida"))
+						out.println("<h3> Modifica non valida </h3>");
+					else if(opz.equals("err"))
+						out.println("<h3> Impossibile apportare tale modifica </h3>");
+				}
 				try {
 		            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 		        } catch (ClassNotFoundException e) {
@@ -40,9 +57,15 @@
 		            connection = DriverManager.getConnection("jdbc:ucanaccess://" + request.getServletContext().getRealPath("/") + "user.accdb");
 		            Statement st = connection.createStatement();
 		            session = request.getSession();
-		            String query = "SELECT * FROM Post WHERE Utente='" + session.getAttribute("user") +"' ORDER BY DataCreazione DESC;"; 
+		            String query ="";
+		            if(user==null || session.getAttribute("user").equals(user))
+		            	query = "SELECT * FROM Post WHERE Utente='" + session.getAttribute("user") +"' ORDER BY DataCreazione DESC;";
+		            else
+		            	query = "SELECT * FROM Post WHERE Utente='" + user +"' ORDER BY DataCreazione DESC;"; 
 		            ResultSet rs = st.executeQuery(query);
-		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Operazione</th>");
+		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th>");
+		            if(user==null || session.getAttribute("user").equals(user))
+		            	out.println("<th>Operazione</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
 		            	out.println("<td>" + rs.getString(3) + "</td>");
@@ -51,12 +74,14 @@
 		            		out.println("<td>" + rs.getString(6) + "</td>");
 		            	else
 		            		out.println("<td></td>");
-		            	if(rs.getString(6)!=null)
+		            	if(rs.getString(7)!=null)
 		            		out.println("<td>" + rs.getString(7) + "</td>");
 		            	else
 		            		out.println("<td></td>");
-		            	out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(1)+"'>Modifica</a>");
-		            	out.println("<a href='Gestione?operazione=elimina&id="+rs.getString(1)+"'>Elimina</a></td>");
+		            	if(user==null || session.getAttribute("user").equals(user)){
+		            		out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(1)+"'>Modifica</a>");
+		            		out.println("<a href='Gestione?operazione=elimina&id="+rs.getString(1)+"'>Elimina</a></td>");
+		            	}
 		            	out.println("</tr>");
 		            }
 		            out.println("</table>");
@@ -68,7 +93,7 @@
 		            if(connection != null){
 		                try{
 		                    connection.close();
-		                }catch(Exception e){System.out.println(e);}
+		                }catch(Exception e){out.println(e);}
 		            }
 		        }
 				

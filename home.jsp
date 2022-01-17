@@ -58,10 +58,9 @@
 		            		out.println("<td>" + rs.getString(4) + "</td>");
 		            	else
 		            		out.println("<td></td>");	
-		            	if(rs.getString(6)!=null)
-		            		out.println("<td title='"+rs.getString(6)+"'>" + rs.getString(5) + "</td>");
-		            	else
-		            		out.println("<td>" + rs.getString(5) + "</td>");
+		            	
+		            	out.println("<td title='"+rs.getString(6)+"'><a href='profilo.jsp?user=" + rs.getString(5) + "'>" + rs.getString(5) +" </a></td>");
+		            	
 		            	if(session.getAttribute("tipo").equals("admin"))
 		            		out.println("<td><a href='Gestione?operazione=elimina&id="+rs.getString(7)+"'>Elimina</a></td>");
 		            	out.println("</tr>");
@@ -75,7 +74,7 @@
 		            if(connection != null){
 		                try{
 		                    connection.close();
-		                }catch(Exception e){System.out.println(e);}
+		                }catch(Exception e){out.println(e);}
 	                }
                 }
               }else 
