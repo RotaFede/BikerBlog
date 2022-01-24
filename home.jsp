@@ -29,7 +29,7 @@
 		        
 				<form action="home.jsp" method="get">
 					<input type="search" name="ricerca">
-					<input type="submit" value="Cerca">
+					<input type="submit" value="Cerca per paese">
 				</form>   
 				
 		     <% try{
@@ -39,11 +39,11 @@
 		            session = request.getSession();
 		            String query="";
 		            if(ricerca==null)
-		            	query = "SELECT Titolo, Descrizione, Distanza, Tempo, Utente, Mail, ID FROM Utenti INNER JOIN Post ON Utenti.Username = Post.Utente ORDER BY DataCreazione DESC;";
+		            	query = "SELECT Post.Titolo, Post.Descrizione, Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail FROM Utenti INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Utenti.Username = Post.Utente ORDER BY DataCreazione DESC;";
 	            	else
-		            	query = "SELECT Titolo, Descrizione, Distanza, Tempo, Utente, Mail, ID FROM Utenti INNER JOIN Post ON Utenti.Username = Post.Utente WHERE Titolo like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";		
+		            	query = "SELECT Post.Titolo, Post.Descrizione, Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail FROM Utenti INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Utenti.Username = Post.Utente WHERE Comuni.Nome like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";		
 		            ResultSet rs = st.executeQuery(query);
-		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Utente</th>");
+		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Paese</th><th>Utente</th>");
 		            if(session.getAttribute("tipo").equals("admin"))
 		            	out.println("<th>Operazione</th>");
 		            while(rs.next()) {
@@ -58,8 +58,8 @@
 		            		out.println("<td>" + rs.getString(4) + "</td>");
 		            	else
 		            		out.println("<td></td>");	
-		            	
-		            	out.println("<td title='"+rs.getString(6)+"'><a href='profilo.jsp?user=" + rs.getString(5) + "'>" + rs.getString(5) +" </a></td>");
+		            	out.println("<td>" + rs.getString(5) + "</td>");
+		            	out.println("<td title='"+rs.getString(7)+"'><a href='profilo.jsp?user=" + rs.getString(6) + "'>" + rs.getString(6) +" </a></td>");
 		            	
 		            	if(session.getAttribute("tipo").equals("admin"))
 		            		out.println("<td><a href='Gestione?operazione=elimina&id="+rs.getString(7)+"'>Elimina</a></td>");
