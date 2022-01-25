@@ -28,3 +28,9 @@ li a {
 	padding: 14px 16px;
 	text-decoration: none;
 }
+.ellipsis {
+    max-width: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

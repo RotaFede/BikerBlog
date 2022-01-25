@@ -61,17 +61,20 @@
 		            session = request.getSession();
 		            String query ="";
 		            if(user==null || session.getAttribute("user").equals(user))
-		            	query = "SELECT Post.Titolo, Post.Descrizione, Post.Distanza, Post.Tempo, Comuni.Nome, Post.ID FROM Comuni INNER JOIN Post ON Comuni.ID = Post.Comune WHERE Utente='" + session.getAttribute("user") +"' ORDER BY DataCreazione DESC;";
+		            	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 75), Post.Distanza, Post.Tempo, Comuni.Nome, Post.ID, Provincie.Provincie, Regioni.Nome FROM Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione WHERE Utente='" + session.getAttribute("user") +"' ORDER BY DataCreazione DESC;";
 		            else
-		            	query = "SELECT Post.Titolo, Post.Descrizione, Post.Distanza, Post.Tempo, Comuni.Nome, Post.ID FROM Comuni INNER JOIN Post ON Comuni.ID = Post.Comune WHERE Utente='" + user +"' ORDER BY DataCreazione DESC;";
+		            	query = "SELECT Post.Titolo, Post.Descrizione, Post.Distanza, Post.Tempo, Comuni.Nome, Post.ID, Provincie.Provincie, Regioni.Nome FROM Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione WHERE Utente='" + user +"' ORDER BY DataCreazione DESC;";
 		            ResultSet rs = st.executeQuery(query);
 		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Paese</th>");
-		            if(user==null || session.getAttribute("user").equals(user))
+		            if(session.getAttribute("user").equals(user)|| session.getAttribute("tipo").equals("admin"))
 		            	out.println("<th>Operazione</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
 		            	out.println("<td>" + rs.getString(1) + "</td>");
-		            	out.println("<td>" + rs.getString(2) + "</td>");
+		            	if(rs.getString(2).length()>=75)
+		            		out.println("<td>" + rs.getString(2) + "...</td>");
+		            	else
+		            		out.println("<td>" + rs.getString(2) + "</td>");
 		            	if(rs.getString(3)!=null)
 		            		out.println("<td>" + rs.getString(3) + "</td>");
 		            	else
@@ -80,11 +83,13 @@
 		            		out.println("<td>" + rs.getString(4) + "</td>");
 		            	else
 		            		out.println("<td></td>");
-		            	out.println("<td>" + rs.getString(5) + "</td>");
-		            	if(user==null || session.getAttribute("user").equals(user)){
+		            	out.println("<td title='"+rs.getString(7)+", "+ rs.getString(8)+"'>" + rs.getString(5) + "</td>");
+		            	if(session.getAttribute("user").equals(user)){
 		            		out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(6)+"'>Modifica</a>");
 		            		out.println("<a href='Gestione?operazione=elimina&id="+rs.getString(6)+"'>Elimina</a></td>");
 		            	}
+		            	if(session.getAttribute("tipo").equals("admin"))
+		            		out.println("<td><a href='Gestione?operazione=elimina&id="+rs.getString(6)+"'>Elimina</a></td>");
 		            	out.println("</tr>");
 		            }
 		            out.println("</table>");
