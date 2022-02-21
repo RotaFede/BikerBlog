@@ -34,7 +34,11 @@
 					out.println("<li><a href='Gestione?operazione=user'>Modifica Profilo</a></li>");
 				}
 				out.println("<li><a href='Logout'>Esci</a></li>");
-				out.println("</ul><br><br>");
+				out.println("</ul><br>");
+				if(user!=null)
+					out.println("<h2>Profilo di: " +user+ "</h2>");
+				else
+					out.println("<h2>Profilo di: " +session.getAttribute("user")+ "</h2>");
 				if(opz!=null){
 					if(opz.equals("crea"))
 						out.println("<h3> Post creato correttamente </h3>");
@@ -66,7 +70,7 @@
 		            	query = "SELECT Post.Titolo, Post.Descrizione, Post.Distanza, Post.Tempo, Comuni.Nome, Post.ID, Provincie.Provincie, Regioni.Nome FROM Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione WHERE Utente='" + user +"' ORDER BY DataCreazione DESC;";
 		            ResultSet rs = st.executeQuery(query);
 		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Paese</th>");
-		            if(session.getAttribute("user").equals(user)|| session.getAttribute("tipo").equals("admin"))
+		            if(user==null || session.getAttribute("user").equals(user)|| session.getAttribute("tipo").equals("admin"))
 		            	out.println("<th>Operazione</th>");
 		            while(rs.next()) {
 		    			out.println("<tr>");
@@ -84,7 +88,7 @@
 		            	else
 		            		out.println("<td></td>");
 		            	out.println("<td title='"+rs.getString(7)+", "+ rs.getString(8)+"'>" + rs.getString(5) + "</td>");
-		            	if(session.getAttribute("user").equals(user)){
+		            	if(user==null || session.getAttribute("user").equals(user)){
 		            		out.println("<td> <a href='Gestione?operazione=modifica&id="+rs.getString(6)+"'>Modifica</a>");
 		            		out.println("<a href='Gestione?operazione=elimina&id="+rs.getString(6)+"'>Elimina</a></td>");
 		            	}

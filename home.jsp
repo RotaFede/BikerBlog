@@ -13,6 +13,7 @@
 		<!-- fine nav -->
 	
 		<%@ page import="java.io.*" %>
+		<%@page import="java.io.PrintStream"%>
 		<%@ page import="java.sql.*" %>
 		<%@ page import="javax.servlet.ServletException" %>
 		<%@ page import="javax.servlet.annotation.WebServlet" %>
@@ -81,7 +82,8 @@
 		            out.println("</table><br><br>");
 		        }
 		        catch (SQLException ex) {
-		            out.println("<p>" + ex +"</p>");
+		            out.println("<p> Errore nella ricerca </p>");
+		            //System.out.print(ex);
 		        }
 		        finally{
 		            if(connection != null){
