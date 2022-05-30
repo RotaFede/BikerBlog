@@ -48,11 +48,11 @@
 		            if(ricerca==null)
 		            	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome, Post.ID FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente ORDER BY Post.DataCreazione DESC;";
 	            	else if(tipo.equals("Cerca per paese"))
-		            	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente WHERE Comuni.Nome like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";
+		            	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome, Post.ID FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente WHERE Comuni.Nome like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";
 		           	else if(tipo.equals("Cerca per provincia"))
-			           	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente WHERE Provincie.Provincie like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";
+			           	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome, Post.ID FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente WHERE Provincie.Provincie like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";
 		           	else if(tipo.equals("Cerca per regione"))
-		            	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente WHERE Regioni.Nome like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";
+		            	query = "SELECT Post.Titolo, SUBSTRING(Post.Descrizione, 1, 60), Post.Distanza, Post.Tempo, Comuni.Nome, Post.Utente, Utenti.Mail, Provincie.Provincie, Regioni.Nome, Post.ID FROM Utenti INNER JOIN (Regioni INNER JOIN (Provincie INNER JOIN (Comuni INNER JOIN Post ON Comuni.ID = Post.Comune) ON Provincie.ID = Comuni.Provincia) ON Regioni.ID = Provincie.Regione) ON Utenti.Username = Post.Utente WHERE Regioni.Nome like '*"+ricerca+"*'ORDER BY DataCreazione DESC;";
 		            ResultSet rs = st.executeQuery(query);
 		            out.println("<table><th>Titolo</th><th>Descrizione</th><th>Lunghezza(Km)</th><th>Tempo(h)</th><th>Paese</th><th>Utente</th>");
 		            if(session.getAttribute("tipo").equals("admin"))
@@ -82,7 +82,7 @@
 		            out.println("</table><br><br>");
 		        }
 		        catch (SQLException ex) {
-		            out.println("<p> Errore nella ricerca </p>");
+		            out.println("<p> Errore nella ricerca: " + ex + "</p>");
 		            //System.out.print(ex);
 		        }
 		        finally{
